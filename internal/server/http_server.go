@@ -185,6 +185,34 @@ func (s *HttpServer) BroadcastStatus() {
 	}
 }
 
+type tzGroup struct {
+	Name string
+	IDs  []area.ID
+}
+
+var tzGroups = []tzGroup{
+	// --- S Tier groups ---
+	{Name: "Sewers", IDs: []area.ID{area.SewersLevel1Act2, area.SewersLevel2Act2, area.SewersLevel3Act2}},
+	{Name: "Halls of the Dead", IDs: []area.ID{area.HallsOfTheDeadLevel1, area.HallsOfTheDeadLevel2, area.HallsOfTheDeadLevel3}},
+	{Name: "Tal Tombs", IDs: []area.ID{area.TalRashasTomb1, area.TalRashasTomb2, area.TalRashasTomb3, area.TalRashasTomb4, area.TalRashasTomb5, area.TalRashasTomb6, area.TalRashasTomb7}},
+	{Name: "Flayer Dungeon", IDs: []area.ID{area.FlayerDungeonLevel1, area.FlayerDungeonLevel2, area.FlayerDungeonLevel3}},
+	{Name: "The Worldstone Keep", IDs: []area.ID{area.TheWorldStoneKeepLevel1, area.TheWorldStoneKeepLevel2, area.TheWorldStoneKeepLevel3}},
+	{Name: "Catacombs", IDs: []area.ID{area.CatacombsLevel1, area.CatacombsLevel2, area.CatacombsLevel3, area.CatacombsLevel4}},
+
+	// --- A Tier groups ---
+	{Name: "Tower Cellar", IDs: []area.ID{area.TowerCellarLevel1, area.TowerCellarLevel2, area.TowerCellarLevel3, area.TowerCellarLevel4, area.TowerCellarLevel5}},
+	{Name: "Cave", IDs: []area.ID{area.CaveLevel1, area.CaveLevel2}},
+	{Name: "Claw Viper Temple", IDs: []area.ID{area.ClawViperTempleLevel1, area.ClawViperTempleLevel2}},
+	{Name: "Jail", IDs: []area.ID{area.JailLevel1, area.JailLevel2, area.JailLevel3}},
+	{Name: "Hole", IDs: []area.ID{area.HoleLevel1, area.HoleLevel2}},
+
+	// --- B Tier groups ---
+	{Name: "Underground Passage", IDs: []area.ID{area.UndergroundPassageLevel1, area.UndergroundPassageLevel2}},
+
+	// --- D Tier groups ---
+	{Name: "Durance of Hate", IDs: []area.ID{area.DuranceOfHateLevel1, area.DuranceOfHateLevel2, area.DuranceOfHateLevel3}},
+}
+
 func New(logger *slog.Logger, manager *bot.SupervisorManager) (*HttpServer, error) {
 	var templates *template.Template
 	helperFuncs := template.FuncMap{
@@ -194,6 +222,224 @@ func New(logger *slog.Logger, manager *bot.SupervisorManager) (*HttpServer, erro
 		"isTZSelected": func(slice []area.ID, value int) bool {
 			return slices.Contains(slice, area.ID(value))
 		},
+		"tzTier": func(value int) string {
+			tz := area.ID(value)
+
+			// ---- S TIER ----
+			switch tz {
+			case
+				area.TalRashasTomb1,
+				area.TalRashasTomb2,
+				area.TalRashasTomb3,
+				area.TalRashasTomb4,
+				area.TalRashasTomb5,
+				area.TalRashasTomb6,
+				area.TalRashasTomb7,
+				area.ChaosSanctuary,
+				area.Cathedral,
+				area.FlayerJungle,
+				area.FlayerDungeonLevel1,
+				area.FlayerDungeonLevel2,
+				area.FlayerDungeonLevel3,
+				area.PitLevel1,
+				area.PitLevel2,
+				area.TheWorldStoneKeepLevel1,
+				area.TheWorldStoneKeepLevel2,
+				area.TheWorldStoneKeepLevel3,
+				area.ThroneOfDestruction,
+				area.RockyWaste,
+				area.StonyTombLevel1,
+				area.StonyTombLevel2,
+				area.SewersLevel1Act2,
+				area.SewersLevel2Act2,
+				area.SewersLevel3Act2,
+				area.DryHills,
+				area.HallsOfTheDeadLevel1,
+				area.HallsOfTheDeadLevel2,
+				area.HallsOfTheDeadLevel3,
+				area.InnerCloister,
+				area.CatacombsLevel1,
+				area.CatacombsLevel2,
+				area.CatacombsLevel3,
+				area.CatacombsLevel4:
+				return "S"
+			}
+
+			// ---- A TIER ----
+			switch tz {
+			case
+				area.CrystallinePassage,
+				area.FrozenRiver,
+				area.NihlathaksTemple,
+				area.HallsOfAnguish,
+				area.HallsOfPain,
+				area.HallsOfVaught,
+				area.ForgottenTower,
+				area.TowerCellarLevel1,
+				area.TowerCellarLevel2,
+				area.TowerCellarLevel3,
+				area.TowerCellarLevel4,
+				area.TowerCellarLevel5,
+				area.GlacialTrail,
+				area.DrifterCavern,
+				area.OuterSteppes,
+				area.PlainsOfDespair,
+				area.RiverOfFlame,
+				area.CityOfTheDamned,
+				area.ColdPlains,
+				area.CaveLevel1,
+				area.CaveLevel2,
+				area.KurastBazaar,
+				area.DisusedFane,
+				area.RuinedTemple,
+				area.LostCity,
+				area.ValleyOfSnakes,
+				area.ClawViperTempleLevel1,
+				area.ClawViperTempleLevel2,
+				area.Barracks,
+				area.JailLevel1,
+				area.JailLevel2,
+				area.JailLevel3,
+				area.BlackMarsh,
+				area.HoleLevel1,
+				area.HoleLevel2:
+				return "A"
+			}
+
+			// ---- B TIER ----
+			switch tz {
+			case
+				area.TheAncientsWay,
+				area.IcyCellar,
+				area.GreatMarsh,
+				area.SpiderForest,
+				area.SpiderCavern,
+				area.AncientTunnels,
+				area.UndergroundPassageLevel1,
+				area.UndergroundPassageLevel2,
+				area.DarkWood,
+				area.BloodyFoothills,
+				area.FrigidHighlands,
+				area.Abaddon:
+				return "B"
+			}
+
+			// ---- C TIER ----
+			switch tz {
+			case
+				area.StonyField,
+				area.ArreatPlateau,
+				area.ArcaneSanctuary,
+				area.Travincal,
+				area.PitOfAcheron,
+				area.MooMooFarm:
+				return "C"
+			}
+
+			// ---- D TIER ----
+			switch tz {
+			case
+				area.BurialGrounds,
+				area.Crypt,
+				area.Mausoleum,
+				area.Tristram,
+				area.DuranceOfHateLevel1,
+				area.DuranceOfHateLevel2,
+				area.DuranceOfHateLevel3,
+				area.FarOasis:
+				return "D"
+			}
+
+			// ---- F TIER ----
+			switch tz {
+			case
+				area.DenOfEvil,
+				area.BloodMoor:
+				return "F"
+			}
+
+			// Fallback tier if we missed something
+			return "F"
+		},
+
+		// --- GROUP HELPERS ---
+
+		// All multi-level groups
+		"tzGroups": func() []tzGroup {
+			return tzGroups
+		},
+
+		// Given a group and the AvailableTZs map, return the int IDs that exist
+		"tzGroupAreas": func(group tzGroup, m map[int]string) []int {
+			ids := make([]int, 0, len(group.IDs))
+			for _, id := range group.IDs {
+				if _, ok := m[int(id)]; ok {
+					ids = append(ids, int(id))
+				}
+			}
+			sort.Ints(ids)
+			return ids
+		},
+
+		// True if this area ID is part of any tzGroup
+		"tzGroupContains": func(id int) bool {
+			for _, g := range tzGroups {
+				for _, gid := range g.IDs {
+					if area.ID(id) == gid {
+						return true
+					}
+				}
+			}
+			return false
+		},
+
+		// Strip "X " prefix from names like "Catacombs Level 1" -> "Level 1"
+		"sewerLevelLabel": func(name string) string {
+			// Common prefixes to strip for grouped zones
+			prefixes := []string{
+				"Sewers ",
+				"Halls of the Dead ",
+				"Tal Tombs ",
+				"Flayer Dungeon ",
+				"The Worldstone Keep ",
+				"Catacombs ",
+				"Tower Cellar ",
+				"Cave ",
+				"Claw Viper Temple ",
+				"Jail ",
+				"Hole ",
+				"Underground Passage ",
+				"Durance of Hate ",
+			}
+
+			for _, p := range prefixes {
+				if strings.HasPrefix(name, p) {
+					trimmed := strings.TrimPrefix(name, p)
+					// If the remaining string starts with the zone name again, skip it
+					return strings.TrimSpace(trimmed)
+				}
+			}
+
+			// If name already contains "Level", just show that part
+			if i := strings.Index(name, "Level"); i != -1 {
+				return strings.TrimSpace(name[i:])
+			}
+
+			return name
+		},
+		"add": func(a, b int) int {
+			return a + b
+		},
+		"groupUnitLabel": func(g tzGroup) string {
+			// Decide what word to show after the group name
+			switch g.Name {
+			case "Tal Tombs":
+				return ""
+			default:
+				return "Levels"
+			}
+		},
+
 		"executeTemplateByName": func(name string, data interface{}) template.HTML {
 			tmpl := templates.Lookup(name)
 			var buf bytes.Buffer
@@ -215,12 +461,12 @@ func New(logger *slog.Logger, manager *bot.SupervisorManager) (*HttpServer, erro
 			return result
 		},
 	}
+
 	templates, err := template.New("").Funcs(helperFuncs).ParseFS(templatesFS, "templates/*.gohtml")
 	if err != nil {
 		return nil, err
 	}
 
-	// Debug: List all loaded templates
 	logger.Info("Loaded templates:")
 	for _, t := range templates.Templates() {
 		logger.Info("  - " + t.Name())
