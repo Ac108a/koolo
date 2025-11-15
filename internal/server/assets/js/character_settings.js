@@ -148,7 +148,6 @@ document.addEventListener('DOMContentLoaded', function () {
     const useExtraBuffsDistContainer = document.getElementById('useExtraBuffsDistContainer');
     const clearPathDistInput = document.getElementById('clearPathDist');
     const clearPathDistValue = document.getElementById('clearPathDistValue');
-
     if (bossStaticThresholdInput) {
         bossStaticThresholdInput.addEventListener('input', handleBossStaticThresholdChange);
     }
@@ -330,12 +329,6 @@ document.addEventListener('DOMContentLoaded', function () {
         if (e.target.closest('.remove-time-range')) {
             e.target.closest('.time-range').remove();
         }
-    });
-
-    document.getElementById('tzTrackAll').addEventListener('change', function (e) {
-        document.querySelectorAll('.tzTrackCheckbox').forEach(checkbox => {
-            checkbox.checked = e.target.checked;
-        });
     });
 
     function filterRunewords(searchTerm = '') { // Default parameter to ensure previously checked runewords show before searching

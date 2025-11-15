@@ -2,6 +2,7 @@ package server
 
 import (
 	"bytes"
+	"cmp"
 	"context"
 	"embed"
 	"encoding/json"
@@ -36,6 +37,7 @@ import (
 	"github.com/hectorgimenez/koolo/internal/event"
 	"github.com/hectorgimenez/koolo/internal/game"
 	"github.com/hectorgimenez/koolo/internal/remote/droplog"
+	terrorzones "github.com/hectorgimenez/koolo/internal/terrorzone"
 	"github.com/hectorgimenez/koolo/internal/utils"
 	"github.com/hectorgimenez/koolo/internal/utils/winproc"
 	"github.com/lxn/win"
@@ -214,6 +216,11 @@ func New(logger *slog.Logger, manager *bot.SupervisorManager) (*HttpServer, erro
 			}
 			return result
 		},
+		"allImmunities": func() []string {
+			return []string{"f", "c", "l", "p", "ph", "m"}
+		},
+		"upper": strings.ToUpper,
+		"trim":  strings.TrimSpace,
 	}
 	templates, err := template.New("").Funcs(helperFuncs).ParseFS(templatesFS, "templates/*.gohtml")
 	if err != nil {
@@ -1452,13 +1459,6 @@ func (s *HttpServer) characterSettings(w http.ResponseWriter, r *http.Request) {
 	}
 	sort.Strings(disabledRuns)
 
-	availableTZs := make(map[int]string)
-	for _, tz := range area.Areas {
-		if tz.CanBeTerrorized() {
-			availableTZs[int(tz.ID)] = tz.Name
-		}
-	}
-
 	if cfg.Scheduler.Days == nil || len(cfg.Scheduler.Days) == 0 {
 		cfg.Scheduler.Days = make([]config.Day, 7)
 		for i := 0; i < 7; i++ {
@@ -1492,14 +1492,13 @@ func (s *HttpServer) characterSettings(w http.ResponseWriter, r *http.Request) {
 		}
 	}
 	cfg.Muling.MuleProfiles = validConfigMuleProfiles
-
 	s.templates.ExecuteTemplate(w, "character_settings.gohtml", CharacterSettings{
 		Supervisor:         supervisor,
 		Config:             cfg,
 		DayNames:           dayNames,
 		EnabledRuns:        enabledRuns,
 		DisabledRuns:       disabledRuns,
-		AvailableTZs:       availableTZs,
+		TerrorZoneGroups:   buildTZGroups(),
 		RecipeList:         config.AvailableRecipes,
 		RunewordRecipeList: config.AvailableRunewordRecipes,
 		AvailableProfiles:  muleProfiles,
@@ -1648,5 +1647,40 @@ func (s *HttpServer) getIntFromForm(r *http.Request, param string, min int, max 
 	} else {
 		result = int(math.Max(math.Min(float64(paramValue), float64(max)), float64(min)))
 	}
+	return result
+}
+
+func buildTZGroups() []TZGroup {
+	groups := make(map[string][]area.ID)
+	for id, info := range terrorzones.Zones() {
+		groupName := info.Group
+		if groupName == "" {
+			groupName = id.Area().Name
+		}
+		groups[groupName] = append(groups[groupName], id)
+	}
+
+	var result []TZGroup
+	for name, ids := range groups {
+		zone := terrorzones.Zones()[ids[0]]
+
+		result = append(result, TZGroup{
+			Act:           zone.Act,
+			Name:          name,
+			PrimaryAreaID: int(ids[0]),
+			Immunities:    zone.Immunities,
+			BossPacks:     zone.BossPack,
+			ExpTier:       string(zone.ExpTier),
+			LootTier:      string(zone.LootTier),
+		})
+	}
+
+	slices.SortStableFunc(result, func(a, b TZGroup) int {
+		if a.Act != b.Act {
+			return cmp.Compare(a.Act, b.Act)
+		}
+		return cmp.Compare(a.Name, b.Name)
+	})
+
 	return result
 }

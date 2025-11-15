@@ -42,7 +42,7 @@ var Routes = map[area.ID][]Route{
 	area.BlackMarsh:     {{Clear(area.BlackMarsh), Clear(area.HoleLevel1), Clear(area.HoleLevel2)}},
 	area.ForgottenTower: {{Move(area.BlackMarsh), Clear(area.ForgottenTower), Clear(area.TowerCellarLevel1), Clear(area.TowerCellarLevel2), Clear(area.TowerCellarLevel3), Clear(area.TowerCellarLevel4), Clear(area.TowerCellarLevel5)}},
 	area.Barracks:       {{Move(area.OuterCloister), Clear(area.Barracks), Clear(area.JailLevel1), Clear(area.JailLevel2), Clear(area.JailLevel3)}},
-	area.Cathedral:      {{Move(area.InnerCloister), Clear(area.Cathedral), Clear(area.CatacombsLevel1), Clear(area.CatacombsLevel2), Clear(area.CatacombsLevel3)}},
+	area.Cathedral:      {{Move(area.InnerCloister), Clear(area.Cathedral), Clear(area.CatacombsLevel1), Clear(area.CatacombsLevel2), Clear(area.CatacombsLevel3), Clear(area.CatacombsLevel4)}},
 	//Tristram, Pit, Cows -> terror_zone.go -> NewPit().Run() ect...
 
 	// Act 2
@@ -50,7 +50,6 @@ var Routes = map[area.ID][]Route{
 	area.DryHills:         {{Clear(area.DryHills), Clear(area.HallsOfTheDeadLevel1), Clear(area.HallsOfTheDeadLevel2), Clear(area.HallsOfTheDeadLevel3)}},
 	area.FarOasis:         {{Clear(area.FarOasis)}},
 	area.LostCity:         {{Clear(area.LostCity), Clear(area.ValleyOfSnakes), Clear(area.ClawViperTempleLevel1), Clear(area.ClawViperTempleLevel2)}},
-	area.ArcaneSanctuary:  {{Clear(area.ArcaneSanctuary)}},
 	// TalRashasTombs, AncientTunnels, Stonytomb -> terror_zone.go -> NewPit().Run() ect...
 
 	// Act 3
