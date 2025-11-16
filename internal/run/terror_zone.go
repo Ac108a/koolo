@@ -54,8 +54,6 @@ func (tz TerrorZone) Run(parameters *RunParameters) error {
 		return NewAncientTunnels().Run(parameters)
 	case area.ArcaneSanctuary:
 		return NewSummonerTZ(tz.customTZEnemyFilter()).Run(parameters)
-	case area.RockyWaste:
-		return NewStonyTomb().Run(parameters)
 	case area.Travincal:
 		return NewTravincal().Run(parameters)
 	case area.DuranceOfHateLevel1:
@@ -108,7 +106,7 @@ func (tz TerrorZone) Run(parameters *RunParameters) error {
 
 func (tz TerrorZone) AvailableTZs() []area.ID {
 	//Simulation
-	tz.ctx.Data.TerrorZones = []area.ID{area.TalRashasTomb1}
+	tz.ctx.Data.TerrorZones = []area.ID{area.RockyWaste}
 	//tz.ctx.RefreshGameData() -< uncomment for normal
 	var availableTZs []area.ID
 	for _, tzone := range tz.ctx.Data.TerrorZones {

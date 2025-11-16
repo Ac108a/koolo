@@ -50,6 +50,7 @@ var Routes = map[area.ID][]Route{
 	area.DryHills:         {{Clear(area.DryHills), Clear(area.HallsOfTheDeadLevel1), Clear(area.HallsOfTheDeadLevel2), Clear(area.HallsOfTheDeadLevel3)}},
 	area.FarOasis:         {{Clear(area.FarOasis)}},
 	area.LostCity:         {{Clear(area.LostCity), Clear(area.ValleyOfSnakes), Clear(area.ClawViperTempleLevel1), Clear(area.ClawViperTempleLevel2)}},
+	area.RockyWaste:       {{Move(area.DryHills), Clear(area.RockyWaste), Clear(area.StonyTombLevel1), Clear(area.StonyTombLevel2)}},
 	// TalRashasTombs, AncientTunnels, Stonytomb -> terror_zone.go -> NewPit().Run() ect...
 
 	// Act 3
