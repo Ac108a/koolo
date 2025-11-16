@@ -61,8 +61,8 @@ var Routes = map[area.ID][]Route{
 	// Travincal, Mephisto -> terror_zone.go -> NewPit().Run() ect...
 
 	// Act 4
-	area.OuterSteppes: {{Move(area.ThePandemoniumFortress), Clear(area.OuterSteppes), Clear(area.PlainsOfDespair)}},
-	area.RiverOfFlame: {{Clear(area.RiverOfFlame), Clear(area.CityOfTheDamned)}},
+	area.OuterSteppes:    {{Move(area.ThePandemoniumFortress), Clear(area.OuterSteppes), Clear(area.PlainsOfDespair)}},
+	area.CityOfTheDamned: {{Clear(area.RiverOfFlame), Clear(area.CityOfTheDamned)}},
 	// Diablo -> terror_zone.go -> NewPit().Run() ect...
 
 	// Act 5
@@ -71,6 +71,7 @@ var Routes = map[area.ID][]Route{
 	area.CrystallinePassage: {{Clear(area.CrystallinePassage), Clear(area.FrozenRiver)}},
 	area.ArreatPlateau:      {{Clear(area.ArreatPlateau), Clear(area.PitOfAcheron)}},
 	area.TheAncientsWay:     {{Clear(area.TheAncientsWay), Clear(area.IcyCellar)}},
+	area.NihlathaksTemple:   {{Clear(area.NihlathaksTemple), Clear(area.HallsOfAnguish), Clear(area.HallsOfPain), Clear(area.HallsOfVaught)}},
 	// Nihlathak, Baal-> terror_zone.go -> NewPit().Run() ect...
 }
 

@@ -51,6 +51,12 @@ func InteractObjectPacket(obj data.Object, isCompletedFn func() bool) error {
 			expectedArea = area.TheWorldstoneChamber
 		case obj.Name == object.DurielsLairPortal && (ctx.Data.PlayerUnit.Area >= area.TalRashasTomb1 && ctx.Data.PlayerUnit.Area <= area.TalRashasTomb7):
 			expectedArea = area.DurielsLair
+		case obj.Name == object.PermanentTownPortal && ctx.Data.PlayerUnit.Area == area.FrigidHighlands:
+			expectedArea = area.Abaddon
+		case obj.Name == object.PermanentTownPortal && ctx.Data.PlayerUnit.Area == area.ArreatPlateau:
+			expectedArea = area.PitOfAcheron
+		case obj.Name == object.PermanentTownPortal && ctx.Data.PlayerUnit.Area == area.FrozenTundra:
+			expectedArea = area.InfernalPit
 		}
 	} else if obj.IsPortal() {
 		// For blue town portals, determine the town area based on current area

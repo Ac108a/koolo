@@ -61,7 +61,7 @@ func (tz TerrorZone) Run(parameters *RunParameters) error {
 	case area.ChaosSanctuary:
 		return NewDiablo().Run(parameters)
 	case area.NihlathaksTemple:
-		return NewNihlathak().Run(parameters)
+		return NewNihlathakTZ(tz.customTZEnemyFilter()).Run(parameters)
 	case area.TheWorldStoneKeepLevel1:
 		return NewBaal(tz.customTZEnemyFilter()).Run(parameters)
 	}
@@ -106,7 +106,7 @@ func (tz TerrorZone) Run(parameters *RunParameters) error {
 
 func (tz TerrorZone) AvailableTZs() []area.ID {
 	//Simulation
-	tz.ctx.Data.TerrorZones = []area.ID{area.RockyWaste}
+	tz.ctx.Data.TerrorZones = []area.ID{area.NihlathaksTemple}
 	//tz.ctx.RefreshGameData() -< uncomment for normal
 	var availableTZs []area.ID
 	for _, tzone := range tz.ctx.Data.TerrorZones {
